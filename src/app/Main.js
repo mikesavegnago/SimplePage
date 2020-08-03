@@ -1,6 +1,8 @@
 import {
     AppBar,
+    Avatar,
     Button,
+    Collapse,
     Divider,
     Drawer,
     Hidden,
@@ -9,11 +11,17 @@ import {
     ListItem,
     ListItemIcon,
     ListItemText,
+    Menu,
+    MenuItem,
     Toolbar
 } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
 import { withRouter } from "react-router-dom";
 
 const drawerWidth = 240;
@@ -44,9 +52,12 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     width: drawerWidth,
   },
+  nested: {
+    paddingLeft: theme.spacing(4),
+  },
   content: {
     textAlign: 'left',
-    padding: theme.spacing(10),
+    padding: theme.spacing(10, 5, 5, 5),
   },
 }));
 
@@ -61,24 +72,89 @@ function Main(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [listMenu, setListMenu] = useState([]);
+
+    useEffect(() => {
+        fetch("http://my-json-server.typicode.com/EnkiGroup/DesafioReactEncontact/menus")
+            .then(results => results.json())
+            .then(results => setListMenu(results));
+    }, []);
+
+
+    const handleClickAvatar = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+
+    const handleCloseAvatar = () => {
+      setAnchorEl(null);
+    };
+
+    const handleLogout = () => {
+        localStorage.setItem('@simple-page/autenticated', false);
+        props.history.push('/');
+    }
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
-      };
+    };
+
+    const handleChangeBody = (id) => {
+        props.history.push({ state: { id: id }})
+    };
+
+    const handleClick = (i) => {
+        listMenu[i]['open'] = !listMenu[i]['open'];
+        setListMenu([...listMenu])
+    };
 
     const drawer = (
         <div>
-            <div className={classes.toolbar} />
+            <div className={classes.toolbar}>
+                <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClickAvatar} style={{float: 'left', marginTop: '3px'}}>
+                    <Avatar>OA</Avatar>
+                </Button>
+                <Menu
+                    id="simple-menu"
+                    key="simple-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleCloseAvatar}
+                >
+                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                </Menu>
+            </div>
             <Divider />
-                <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem button key={text}>
-                    <ListItemIcon><span>a</span></ListItemIcon>
-                    <ListItemText primary={text} />
+                <List component="nav" key="menu">
+                {listMenu && listMenu.map((menu, i) => (
+                    <>
+                    <ListItem button onClick={() => handleClick(i)} key={menu.id}>
+                    <ListItemIcon>
+                        <InboxIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={menu.name} />
+                        {(menu.open || false) ? <ExpandLess /> : <ExpandMore />  }
                     </ListItem>
+                    <Collapse in={(menu.open || false)} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                        {menu.subMenus.map((submenu, j) => (
+                            <ListItem
+                                button
+                                key={submenu.id + "sub"}
+                                className={classes.nested}
+                                onClick={() => handleChangeBody(submenu.id)}>
+                                <ListItemIcon>
+                                    <ArrowRightIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={submenu.name} />
+                            </ListItem>
+                        ))}
+                        </List>
+                    </Collapse>
+                    </>
                 ))}
                 </List>
-            <Divider />
         </div>
     );
 
@@ -131,7 +207,6 @@ function Main(props) {
                 </Hidden>
             </nav>
             <main className={classes.content}>
-                asd
                 {props.children}
             </main>
         </div>
