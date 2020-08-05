@@ -12,27 +12,26 @@ import { Theme, createStyles, makeStyles } from '@material-ui/core/styles';
 import { withRouter } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    container: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      width: 400,
-      margin: `${theme.spacing(0)} auto`
-    },
-    loginBtn: {
-      marginTop: theme.spacing(2),
-      flexGrow: 1
-    },
-    header: {
-      textAlign: 'center',
-      background: '#efefef',
-      color: '#666'
-    },
-    card: {
-      marginTop: theme.spacing(10)
-    }
-
-  }),
+    createStyles({
+        container: {
+            display: 'flex',
+            flexWrap: 'wrap',
+            width: 400,
+            margin: `${theme.spacing(0)} auto`
+        },
+        loginBtn: {
+            marginTop: theme.spacing(2),
+            flexGrow: 1
+        },
+        header: {
+            textAlign: 'center',
+            background: '#efefef',
+            color: '#666'
+        },
+        card: {
+            marginTop: theme.spacing(10)
+        }
+    }),
 );
 
 function Login(props) {
@@ -45,67 +44,68 @@ function Login(props) {
 
   useEffect(() => {
     if (username.trim() && password.trim()) {
-      setIsButtonDisabled(false);
+        setIsButtonDisabled(false);
     } else {
-      setIsButtonDisabled(true);
+        setIsButtonDisabled(true);
     }
   }, [username, password]);
 
   const handleLogin = () => {
-    if (username === 'mike' && password === '123') {
-      setError(false);
-      setHelperText('Login Successfully');
-      localStorage.setItem('@simple-page/autenticated', true);
-      props.history.push('/home');
+    if (username === 'admin' && password === 'admin') {
+        setError(false);
+        setHelperText('Logado com sucesso');
+        localStorage.setItem('@simple-page/autenticated', true);
+        props.history.push('/home');
     } else {
-      setError(true);
-      setHelperText('Incorrect username or password')
+        setError(true);
+        setHelperText('Usuário ou senha incorretos')
     }
   };
 
-  return (
+return (
     <React.Fragment>
-      <form className={classes.container} noValidate autoComplete="off">
-        <Card className={classes.card}>
-          <CardHeader className={classes.header} title="Login" />
-          <CardContent>
-            <div>
-              <TextField
-                error={error}
-                fullWidth
-                id="username"
-                type="email"
-                label="Username"
-                placeholder="Username"
-                margin="normal"
-                onChange={(e)=>setUsername(e.target.value)}
-              />
-              <TextField
-                error={error}
-                fullWidth
-                id="password"
-                type="password"
-                label="Password"
-                placeholder="Password"
-                margin="normal"
-                helperText={helperText}
-                onChange={(e)=>setPassword(e.target.value)}
-              />
-            </div>
-          </CardContent>
-          <CardActions>
-            <Button
-              variant="contained"
-              size="large"
-              color="primary"
-              className={classes.loginBtn}
-              onClick={() => handleLogin()}
-              disabled={isButtonDisabled}>
-              Login
-            </Button>
-          </CardActions>
-        </Card>
-      </form>
+        <form className={classes.container} noValidate autoComplete="off">
+            <Card className={classes.card}>
+                <CardHeader className={classes.header} title="Faça o Login" />
+                <CardContent>
+                    <div>
+                    <TextField
+                        error={error}
+                        fullWidth
+                        id="username"
+                        type="email"
+                        label="Usuário"
+                        placeholder="Username"
+                        margin="normal"
+                        onChange={(e)=>setUsername(e.target.value)}
+                    />
+                    <TextField
+                        error={error}
+                        fullWidth
+                        id="password"
+                        type="password"
+                        label="Senha"
+                        placeholder="Password"
+                        margin="normal"
+                        helperText={helperText}
+                        onChange={(e)=>setPassword(e.target.value)}
+                    />
+                    </div>
+                </CardContent>
+                <CardActions>
+                    <Button
+                        variant="contained"
+                        size="large"
+                        color="primary"
+                        className={classes.loginBtn}
+                        onClick={() => handleLogin()}
+                        disabled={isButtonDisabled}
+                    >
+                    Login
+                    </Button>
+                </CardActions>
+            </Card>
+        </form>
     </React.Fragment>
   );
 }

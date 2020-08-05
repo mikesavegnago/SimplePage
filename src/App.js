@@ -26,9 +26,9 @@ function App() {
     const darkTheme = createMuiTheme({
         palette: {
             type: palletType,
-        primary: {
-            main: mainPrimaryColor
-        }
+            primary: {
+                main: mainPrimaryColor
+            }
         }
     });
 
