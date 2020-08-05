@@ -3,16 +3,48 @@ import {
     Grid,
     Paper
 } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
+import { useLanguages } from "./Languages";
 import { withRouter } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     root: {
+        "&:hover" : {
+            '& $avatar': {
+                display: 'none'
+            },
+            '& $checkbox': {
+                display: 'block'
+            },
+        },
         flexGrow: 1,
+        paddingTop: theme.spacing(2),
+        height: theme.spacing(12),
+    },
+    rootChecked: {
+        '& $avatar': {
+            display: 'none'
+        },
+        '& $checkbox': {
+            display: 'block'
+        },
+        flexGrow: 1,
+        paddingTop: theme.spacing(2),
+        height: theme.spacing(12),
+    },
+    avatar: {
+        display: 'block',
+        width: theme.spacing(3),
+        height: theme.spacing(3),
+    },
+    checkbox: {
+        display: 'none',
+        width: theme.spacing(3),
+        height: theme.spacing(3),
     },
     users: {
         width: theme.spacing(3),
@@ -31,38 +63,45 @@ const useStyles = makeStyles((theme) => ({
 function List(props) {
     const classes = useStyles();
     const data = props.data;
-    const [hover, setHover] = useState(true);
+    const [haveChecked, setHaveChacked] = useState(false);
+    const { language } = useLanguages();
 
-    const onHover = () => {
-        setHover(!hover);
-    }
+    const handleChecked = (event) => {
+      props.handleChecked(event.target.checked, props.index)
+    };
+
+    useEffect(() => {
+        (haveChecked !== props.havechecked) && setHaveChacked(props.havechecked)
+    }, [props.havechecked, haveChecked]);
 
     return (
-        <Paper elevation={1} className={classes.root} onMouseEnter={onHover} onMouseLeave={onHover}>
-            <Grid container spacing={1}>
-                <Grid key={1} item xs={2} sm={1}>
+        <Paper elevation={2} key={data.id + "paper"} className={haveChecked ? classes.rootChecked : classes.root}>
+            <Grid container>
+                <Grid item xs={2} sm={1}>
                     <div className={classes.owner}>
-                        <div style={{display: hover ? 'block' : 'none'}}>
+                        <div className={classes.avatar}>
                             <Avatar>{data.owner}</Avatar>
                         </div>
                         <Checkbox
-                            style={{display: !hover ? 'block' : 'none'}}
-                            checked={false}
+                            className={classes.checkbox}
+                            onChange={handleChecked}
+                            checked={data.checked || false}
+                            inputProps={{ 'aria-label': 'primary checkbox' }}
                         />
                     </div>
                 </Grid>
-                <Grid key={2} item xs={7} sm={9}>
+                <Grid item xs={7} sm={9}>
                     <div className={classes.lines}>{data.name}</div>
                     <div className={classes.lines}>{data.subject}</div>
-                    <div className={classes.lines}>Caixa de entrada</div>
+                    <div className={classes.lines}>{language.description}</div>
                 </Grid>
-                <Grid key={3} item xs={3} sm={2}>
-                    <div className={classes.lines}>Hoje, 11:00</div>
-                    <div className={classes.lines}>-2 horas</div>
+                <Grid item xs={3} sm={2}>
+                    <div className={classes.lines}>{language.date}, 11:00</div>
+                    <div className={classes.lines}>-2 {language.hour}</div>
                     <div className={classes.lines}>
                     <AvatarGroup max={4}>
-                        {data.users && data.users.map((user) => (
-                            <Avatar className={classes.users}>{user}</Avatar>
+                        {data.users && data.users.map((user, i) => (
+                            <Avatar key={data.id + "-" + i} className={classes.users}>{user}</Avatar>
                         ))}
 
                     </AvatarGroup>
