@@ -22,6 +22,7 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
+import MenuIcon from '@material-ui/icons/Menu';
 import { withRouter } from "react-router-dom";
 
 const drawerWidth = 240;
@@ -31,20 +32,20 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   drawer: {
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       width: drawerWidth,
       flexShrink: 0,
     },
   },
   appBar: {
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
     },
   },
   menuButton: {
     marginRight: theme.spacing(2),
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       display: 'none',
     },
   },
@@ -57,7 +58,8 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     textAlign: 'left',
-    padding: theme.spacing(10, 5, 5, 5),
+    width: '100%',
+    padding: theme.spacing(10, 0, 0, 0),
   },
 }));
 
@@ -111,7 +113,12 @@ function Main(props) {
     const drawer = (
         <div>
             <div className={classes.toolbar}>
-                <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClickAvatar} style={{float: 'left', marginTop: '3px'}}>
+                <Button
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    onClick={handleClickAvatar}
+                    style={{float: 'left', marginTop: '3px'}}
+                >
                     <Avatar>OA</Avatar>
                 </Button>
                 <Menu
@@ -171,13 +178,13 @@ function Main(props) {
                     onClick={handleDrawerToggle}
                     className={classes.menuButton}
                 >
-                <span>exp</span>
+                    <MenuIcon/>
                 </IconButton>
                 Home
             </Toolbar>
             </AppBar>
             <nav className={classes.drawer} aria-label="mailbox folders">
-                <Hidden smUp implementation="css">
+                <Hidden xlUp implementation="css">
                     <Drawer
                         container={container}
                         variant="temporary"
@@ -194,7 +201,7 @@ function Main(props) {
                     {drawer}
                     </Drawer>
                 </Hidden>
-                <Hidden xsDown implementation="css">
+                <Hidden smDown implementation="css">
                     <Drawer
                         classes={{
                             paper: classes.drawerPaper,
