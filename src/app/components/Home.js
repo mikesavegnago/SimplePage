@@ -4,6 +4,7 @@ import {
 } from '@material-ui/core';
 import React, {useEffect, useState} from 'react';
 
+import ArchiveIcon from '@material-ui/icons/Archive';
 import List from './List';
 import { useLanguages } from "./Languages";
 import { withRouter } from "react-router-dom";
@@ -26,7 +27,7 @@ function Home(props) {
         setListBody([...listBody])
     };
 
-    const handleFile = () => {
+    const handleArchive = () => {
         const newList = listBody.filter((elm) => elm.checked !== true);
         setListBody(newList)
     };
@@ -42,11 +43,13 @@ function Home(props) {
                 <Button
                     aria-controls="simple-menu"
                     aria-haspopup="true"
-                    onClick={handleFile}
+                    onClick={handleArchive}
                 >
-                    {language.fileBtn}
+                    <ArchiveIcon color="primary" />
+                    {language.archiveBtn}
                 </Button>
             </Paper>
+            {!listBody.length && <p style={{textAlign: "center"}}>Caixa vazia</p>}
             {listBody && listBody.map((menu, i) => (
                 <List data={menu} index={i} key={i} handleChecked={handleChecked} havechecked={haveChecked} />
             ))}

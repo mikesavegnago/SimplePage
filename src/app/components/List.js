@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import Checkbox from '@material-ui/core/Checkbox';
+import { lightBlue } from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/core/styles';
 import { useLanguages } from "./Languages";
 import { withRouter } from "react-router-dom";
@@ -43,13 +44,15 @@ const useStyles = makeStyles((theme) => ({
     },
     checkbox: {
         display: 'none',
-        width: theme.spacing(3),
-        height: theme.spacing(3),
+        width: theme.spacing(5),
+        height: theme.spacing(5),
     },
     users: {
         width: theme.spacing(3),
         height: theme.spacing(3),
-        fontSize: theme.spacing(2)
+        fontSize: theme.spacing(1.5),
+        color: '#666',
+        backgroundColor: lightBlue[100]
     },
     owner: {
         textAlign: 'center',
@@ -57,7 +60,11 @@ const useStyles = makeStyles((theme) => ({
     },
     lines: {
         padding: theme.spacing(0.1)
-    }
+    },
+    blue: {
+        color: '#666',
+        backgroundColor: lightBlue[100],
+    },
   }));
 
 function List(props) {
@@ -80,11 +87,12 @@ function List(props) {
                 <Grid item xs={2} sm={1}>
                     <div className={classes.owner}>
                         <div className={classes.avatar}>
-                            <Avatar>{data.owner}</Avatar>
+                            <Avatar className={classes.blue}>{data.owner}</Avatar>
                         </div>
                         <Checkbox
                             className={classes.checkbox}
                             onChange={handleChecked}
+                            color="primary"
                             checked={data.checked || false}
                             inputProps={{ 'aria-label': 'primary checkbox' }}
                         />

@@ -22,12 +22,16 @@ function App() {
     const [darkState, setDarkState] = useState(false);
     const palletType = darkState ? "dark" : "light";
 
-    const mainPrimaryColor = darkState ? grey[800] : blue[800];
+    const mainPrimaryColor = darkState ? grey[50] : blue[800];
+    const mainSecondaryColor = darkState ? grey[800] : blue[800];
     const darkTheme = createMuiTheme({
         palette: {
             type: palletType,
             primary: {
                 main: mainPrimaryColor
+            },
+            secondary: {
+                main: mainSecondaryColor
             }
         }
     });

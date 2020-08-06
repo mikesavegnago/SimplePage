@@ -27,44 +27,49 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import LanguageIcon from '@material-ui/icons/Language';
 import MenuIcon from '@material-ui/icons/Menu';
 import Switch from "@material-ui/core/Switch";
+import { lightBlue } from '@material-ui/core/colors';
 import { withRouter } from "react-router-dom";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  drawer: {
-    [theme.breakpoints.up('md')]: {
-      width: drawerWidth,
-      flexShrink: 0,
+    root: {
+        display: 'flex',
     },
-  },
-  appBar: {
-    [theme.breakpoints.up('md')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: drawerWidth,
+    drawer: {
+        [theme.breakpoints.up('md')]: {
+        width: drawerWidth,
+        flexShrink: 0,
+        },
     },
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
+    appBar: {
+        [theme.breakpoints.up('md')]: {
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: drawerWidth,
+        },
     },
-  },
-  toolbar: theme.mixins.toolbar,
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  nested: {
-    paddingLeft: theme.spacing(4),
-  },
-  content: {
-    textAlign: 'left',
-    width: '100%',
-    padding: theme.spacing(9.5, 0, 0, 0),
-  },
+    menuButton: {
+        marginRight: theme.spacing(2),
+        [theme.breakpoints.up('md')]: {
+        display: 'none',
+        },
+    },
+    toolbar: theme.mixins.toolbar,
+    drawerPaper: {
+        width: drawerWidth,
+    },
+    nested: {
+        paddingLeft: theme.spacing(4),
+    },
+    content: {
+        textAlign: 'left',
+        width: '100%',
+        padding: theme.spacing(9.5, 0, 0, 0),
+    },
+    blue: {
+        color: '#666',
+        backgroundColor: lightBlue[100],
+    },
 }));
 
 function Main(props) {
@@ -134,7 +139,7 @@ function Main(props) {
                     onClick={handleClickAvatar}
                     style={{float: 'left', marginTop: '3px'}}
                 >
-                    <Avatar>OA</Avatar>
+                    <Avatar className={classes.blue}>OA</Avatar>
                 </Button>
                 <Menu
                     id="simple-menu"
@@ -185,27 +190,27 @@ function Main(props) {
 
     return (
         <div className={classes.root}>
-            <AppBar position="fixed" className={classes.appBar}>
+            <AppBar position="fixed" className={classes.appBar} color="secondary">
             <Toolbar>
                 <Grid container>
-                    <Grid item xs={10} sm={10} style={{textAlign: 'left'}}>
+                    <Grid item xs={1} sm={1} md={1} lg={1} style={{textAlign: 'left'}} className={classes.menuButton}>
                         <IconButton
                             color="inherit"
                             aria-label="open drawer"
                             edge="start"
                             onClick={handleDrawerToggle}
-                            className={classes.menuButton}
                         >
                             <MenuIcon/>
                         </IconButton>
+                    </Grid>
+                    <Grid item xs={6} sm={6} md={6} lg={6} style={{textAlign: 'left'}}>
                             <p>{language.title}</p>
                     </Grid>
-                    <Grid item xs={2} sm={2} style={{textAlign: 'right'}}>
+                    <Grid item xs={4} sm={4} md={6} lg={5} style={{textAlign: 'right'}}>
                         <Button
                             aria-controls="simple-menu"
                             aria-haspopup="true"
                             onClick={handleClickLang}
-                            style={{float: 'right', marginTop: '3px'}}
                         >
                             <LanguageIcon />
                         </Button>
@@ -220,7 +225,7 @@ function Main(props) {
                             <MenuItem onClick={() => setLanguage(languages.ptBR)}>pt-BR</MenuItem>
                             <MenuItem onClick={() => setLanguage(languages.en)}>en</MenuItem>
                         </Menu>
-                        <Switch checked={props.darkState} onChange={handleThemeChange} />
+                        <Switch color="primary" checked={props.darkState} onChange={handleThemeChange} />
                     </Grid>
                 </Grid>
             </Toolbar>

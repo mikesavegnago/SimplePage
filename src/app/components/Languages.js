@@ -6,14 +6,14 @@ export const languages = {
   ptBR: {
     title: "Principal",
     description: "Caixa de entrada",
-    fileBtn: "Arquivar",
+    archiveBtn: "Arquivar",
     date: "Hoje",
     hour: "Hora(s)",
   },
   en: {
     title: "Home",
     description: "Inbox",
-    fileBtn: "File",
+    archiveBtn: "Archive",
     date: "Today",
     hour: "Hour(s)",
   }
